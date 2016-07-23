@@ -20,11 +20,10 @@ interface Pikkel {
 
     fun <T> state(initial: T): ReadWriteProperty<Pikkel, T> = State(initial)
 
-    private class State<T>(val initial: T) : ReadWriteProperty<Pikkel, T> {
+    private class State<T>(private val initial: T) : ReadWriteProperty<Pikkel, T> {
 
-        private var useInitial: Boolean = true
         override fun getValue(thisRef: Pikkel, property: KProperty<*>): T {
-            if (useInitial) {
+            if (!thisRef.bundle.containsKey(property.name)) {
                 return initial
             } else {
                 @Suppress("UNCHECKED_CAST")
@@ -33,8 +32,6 @@ interface Pikkel {
         }
 
         override fun setValue(thisRef: Pikkel, property: KProperty<*>, value: T) {
-            useInitial = false
-            value ?: return thisRef.bundle.remove(property.name)
             when (value) {
                 is Bundle -> thisRef.bundle.putBundle(property.name, value)
                 is Int -> thisRef.bundle.putInt(property.name, value)
@@ -44,15 +41,15 @@ interface Pikkel {
                 is BooleanArray -> thisRef.bundle.putBooleanArray(property.name, value)
                 is Char -> thisRef.bundle.putChar(property.name, value)
                 is CharArray -> thisRef.bundle.putCharArray(property.name, value)
-                is CharSequence -> thisRef.bundle.putCharSequence(property.name, value)
                 is Float -> thisRef.bundle.putFloat(property.name, value)
                 is FloatArray -> thisRef.bundle.putFloatArray(property.name, value)
                 is Parcelable -> thisRef.bundle.putParcelable(property.name, value)
-                is Serializable -> thisRef.bundle.putSerializable(property.name, value)
                 is Short -> thisRef.bundle.putShort(property.name, value)
                 is ShortArray -> thisRef.bundle.putShortArray(property.name, value)
-                is Serializable -> thisRef.bundle.putSerializable(property.name, value)
                 is String -> thisRef.bundle.putString(property.name, value)
+                is CharSequence -> thisRef.bundle.putCharSequence(property.name, value)
+                is Serializable -> thisRef.bundle.putSerializable(property.name, value)
+                null -> thisRef.bundle.putString(property.name, null)
                 else -> IllegalArgumentException()
             }
         }

@@ -10,6 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -24,10 +25,20 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    testCompile "junit:junit:${junitVersion}"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    androidTestCompile "junit:junit:${junitVersion}"
+    androidTestCompile "org.jetbrains.kotlin:kotlin-test:${kotlin_version}"
+    androidTestCompile "com.android.support.test:runner:${supportTestVersion}"
+    androidTestCompile "com.android.support.test:rules:${supportTestVersion}"
+    androidTestCompile "com.android.support:support-annotations:${supportPackageVersion}"
+
 }
 repositories {
     mavenCentral()
+}
+buildscript {
+    ext.junitVersion = '4.12'
+    ext.supportTestVersion = '0.4'
+    ext.supportPackageVersion = '23.1.1'
 }
