@@ -36,6 +36,7 @@ interface Pikkel {
             when (value) {
                 is Bundle -> thisRef.pikkelBundle.putBundle(property.name, value)
                 is Int -> thisRef.pikkelBundle.putInt(property.name, value)
+                is IntArray -> thisRef.pikkelBundle.putIntArray(property.name, value)
                 is Byte -> thisRef.pikkelBundle.putByte(property.name, value)
                 is ByteArray -> thisRef.pikkelBundle.putByteArray(property.name, value)
                 is Boolean -> thisRef.pikkelBundle.putBoolean(property.name, value)
@@ -44,14 +45,14 @@ interface Pikkel {
                 is CharArray -> thisRef.pikkelBundle.putCharArray(property.name, value)
                 is Float -> thisRef.pikkelBundle.putFloat(property.name, value)
                 is FloatArray -> thisRef.pikkelBundle.putFloatArray(property.name, value)
-                is Parcelable -> thisRef.pikkelBundle.putParcelable(property.name, value)
                 is Short -> thisRef.pikkelBundle.putShort(property.name, value)
                 is ShortArray -> thisRef.pikkelBundle.putShortArray(property.name, value)
                 is String -> thisRef.pikkelBundle.putString(property.name, value)
                 is CharSequence -> thisRef.pikkelBundle.putCharSequence(property.name, value)
                 is Serializable -> thisRef.pikkelBundle.putSerializable(property.name, value)
+                is Parcelable -> thisRef.pikkelBundle.putParcelable(property.name, value)
                 null -> thisRef.pikkelBundle.putString(property.name, null)
-                else -> throw IllegalArgumentException()
+                else -> throw IllegalArgumentException("object should be Serializable or Parcelable")
             }
         }
     }
