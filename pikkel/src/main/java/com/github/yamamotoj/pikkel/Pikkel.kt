@@ -6,16 +6,17 @@ import java.io.Serializable
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+
 interface Pikkel {
-    val bundle: Bundle
+    val pikkelBundle: Bundle
     fun restoreInstanceState(savedInstanceState: Bundle?) {
         savedInstanceState ?: return
-        this.bundle.putAll(savedInstanceState)
+        pikkelBundle.putAll(savedInstanceState)
     }
 
     fun saveInstanceState(outState: Bundle?) {
         outState ?: return
-        outState.putAll(bundle)
+        outState.putAll(pikkelBundle)
     }
 
     fun <T> state(initial: T): ReadWriteProperty<Pikkel, T> = State(initial)
@@ -23,40 +24,40 @@ interface Pikkel {
     private class State<T>(private val initial: T) : ReadWriteProperty<Pikkel, T> {
 
         override fun getValue(thisRef: Pikkel, property: KProperty<*>): T {
-            if (!thisRef.bundle.containsKey(property.name)) {
+            if (!thisRef.pikkelBundle.containsKey(property.name)) {
                 return initial
             } else {
                 @Suppress("UNCHECKED_CAST")
-                return thisRef.bundle.get(property.name) as T
+                return thisRef.pikkelBundle.get(property.name) as T
             }
         }
 
         override fun setValue(thisRef: Pikkel, property: KProperty<*>, value: T) {
             when (value) {
-                is Bundle -> thisRef.bundle.putBundle(property.name, value)
-                is Int -> thisRef.bundle.putInt(property.name, value)
-                is Byte -> thisRef.bundle.putByte(property.name, value)
-                is ByteArray -> thisRef.bundle.putByteArray(property.name, value)
-                is Boolean -> thisRef.bundle.putBoolean(property.name, value)
-                is BooleanArray -> thisRef.bundle.putBooleanArray(property.name, value)
-                is Char -> thisRef.bundle.putChar(property.name, value)
-                is CharArray -> thisRef.bundle.putCharArray(property.name, value)
-                is Float -> thisRef.bundle.putFloat(property.name, value)
-                is FloatArray -> thisRef.bundle.putFloatArray(property.name, value)
-                is Parcelable -> thisRef.bundle.putParcelable(property.name, value)
-                is Short -> thisRef.bundle.putShort(property.name, value)
-                is ShortArray -> thisRef.bundle.putShortArray(property.name, value)
-                is String -> thisRef.bundle.putString(property.name, value)
-                is CharSequence -> thisRef.bundle.putCharSequence(property.name, value)
-                is Serializable -> thisRef.bundle.putSerializable(property.name, value)
-                null -> thisRef.bundle.putString(property.name, null)
-                else -> IllegalArgumentException()
+                is Bundle -> thisRef.pikkelBundle.putBundle(property.name, value)
+                is Int -> thisRef.pikkelBundle.putInt(property.name, value)
+                is Byte -> thisRef.pikkelBundle.putByte(property.name, value)
+                is ByteArray -> thisRef.pikkelBundle.putByteArray(property.name, value)
+                is Boolean -> thisRef.pikkelBundle.putBoolean(property.name, value)
+                is BooleanArray -> thisRef.pikkelBundle.putBooleanArray(property.name, value)
+                is Char -> thisRef.pikkelBundle.putChar(property.name, value)
+                is CharArray -> thisRef.pikkelBundle.putCharArray(property.name, value)
+                is Float -> thisRef.pikkelBundle.putFloat(property.name, value)
+                is FloatArray -> thisRef.pikkelBundle.putFloatArray(property.name, value)
+                is Parcelable -> thisRef.pikkelBundle.putParcelable(property.name, value)
+                is Short -> thisRef.pikkelBundle.putShort(property.name, value)
+                is ShortArray -> thisRef.pikkelBundle.putShortArray(property.name, value)
+                is String -> thisRef.pikkelBundle.putString(property.name, value)
+                is CharSequence -> thisRef.pikkelBundle.putCharSequence(property.name, value)
+                is Serializable -> thisRef.pikkelBundle.putSerializable(property.name, value)
+                null -> thisRef.pikkelBundle.putString(property.name, null)
+                else -> throw IllegalArgumentException()
             }
         }
     }
 }
 
 class PikkelDelegate() : Pikkel {
-    override val bundle: Bundle = Bundle()
+    override val pikkelBundle: Bundle = Bundle()
 }
 
