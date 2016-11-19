@@ -8,13 +8,12 @@ class MainActivity : AppCompatActivity(), Pikkel by PikkelDelegate() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        restoreInstanceState(savedInstanceState)
-        /*  ... */
+        restoreInstanceState(savedInstanceState) // Saved states are restored here by Pikkel
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        saveInstanceState(outState)
+        saveInstanceState(outState) // Save states here by Pikkel
     }
 }
 ```
