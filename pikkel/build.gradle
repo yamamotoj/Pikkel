@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion 25
@@ -9,7 +10,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "0.3.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -22,6 +23,8 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 }
+
+group = 'com.github.Yamamotoj'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
