@@ -2,7 +2,7 @@
 An alternative to IcePick for Kotlin.
 
 ```kotlin
-class MainActivity : AppCompatActivity(), Pikkel by PikkelDelegate() {
+class MainActivity : AppCompatActivity(), Pikkel by PikkelDelegate() { // Implement Pikkel interface with PikkelDelegate class delegation.
 
     var data by state<String?>(null) // This will be automatically saved and restored
 
