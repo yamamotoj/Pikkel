@@ -33,7 +33,7 @@ repositories {
 
 ```gradle
 dependencies {
-  compile 'com.github.yamamotoj:pikkel:0.3.1'
+  compile 'com.github.yamamotoj:pikkel:0.3.2'
 }
 ```
 
