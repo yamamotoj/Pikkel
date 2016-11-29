@@ -12,6 +12,7 @@ interface Pikkel {
     fun restoreInstanceState(savedInstanceState: Bundle?) {
         savedInstanceState ?: return
         pikkelBundle.putAll(savedInstanceState)
+        pikkelBundle.keySet().filter { !it.startsWith("pikkel:") }.forEach { pikkelBundle.remove(it) }
     }
 
     fun saveInstanceState(outState: Bundle?) {
@@ -24,35 +25,36 @@ interface Pikkel {
     private class State<T>(private val initial: T) : ReadWriteProperty<Pikkel, T> {
 
         override fun getValue(thisRef: Pikkel, property: KProperty<*>): T {
-            if (!thisRef.pikkelBundle.containsKey(property.name)) {
+            val key = "pikkel:" + property.name
+            if (!thisRef.pikkelBundle.containsKey(key)) {
                 return initial
             } else {
                 @Suppress("UNCHECKED_CAST")
-                return thisRef.pikkelBundle.get(property.name) as T
+                return thisRef.pikkelBundle.get(key) as T
             }
         }
 
         override fun setValue(thisRef: Pikkel, property: KProperty<*>, value: T) {
+            val key = "pikkel:" + property.name
             when (value) {
-                is Bundle -> thisRef.pikkelBundle.putBundle(property.name, value)
-                is Int -> thisRef.pikkelBundle.putInt(property.name, value)
-                is IntArray -> thisRef.pikkelBundle.putIntArray(property.name, value)
-                is Byte -> thisRef.pikkelBundle.putByte(property.name, value)
-                is ByteArray -> thisRef.pikkelBundle.putByteArray(property.name, value)
-                is Boolean -> thisRef.pikkelBundle.putBoolean(property.name, value)
-                is BooleanArray -> thisRef.pikkelBundle.putBooleanArray(property.name, value)
-                is Char -> thisRef.pikkelBundle.putChar(property.name, value)
-                is CharArray -> thisRef.pikkelBundle.putCharArray(property.name, value)
-                is Float -> thisRef.pikkelBundle.putFloat(property.name, value)
-                is FloatArray -> thisRef.pikkelBundle.putFloatArray(property.name, value)
-                is Short -> thisRef.pikkelBundle.putShort(property.name, value)
-                is ShortArray -> thisRef.pikkelBundle.putShortArray(property.name, value)
-                is String -> thisRef.pikkelBundle.putString(property.name, value)
-                is CharSequence -> thisRef.pikkelBundle.putCharSequence(property.name, value)
-                is Serializable -> thisRef.pikkelBundle.putSerializable(property.name, value)
-                is Parcelable -> thisRef.pikkelBundle.putParcelable(property.name, value)
-                null -> thisRef.pikkelBundle.putString(property.name, null)
-                else -> throw IllegalArgumentException("object should be Serializable or Parcelable")
+                is Bundle -> thisRef.pikkelBundle.putBundle(key, value)
+                is Int -> thisRef.pikkelBundle.putInt(key, value)
+                is Byte -> thisRef.pikkelBundle.putByte(key, value)
+                is ByteArray -> thisRef.pikkelBundle.putByteArray(key, value)
+                is Boolean -> thisRef.pikkelBundle.putBoolean(key, value)
+                is BooleanArray -> thisRef.pikkelBundle.putBooleanArray(key, value)
+                is Char -> thisRef.pikkelBundle.putChar(key, value)
+                is CharArray -> thisRef.pikkelBundle.putCharArray(key, value)
+                is Float -> thisRef.pikkelBundle.putFloat(key, value)
+                is FloatArray -> thisRef.pikkelBundle.putFloatArray(key, value)
+                is Parcelable -> thisRef.pikkelBundle.putParcelable(key, value)
+                is Short -> thisRef.pikkelBundle.putShort(key, value)
+                is ShortArray -> thisRef.pikkelBundle.putShortArray(key, value)
+                is String -> thisRef.pikkelBundle.putString(key, value)
+                is CharSequence -> thisRef.pikkelBundle.putCharSequence(key, value)
+                is Serializable -> thisRef.pikkelBundle.putSerializable(key, value)
+                null -> thisRef.pikkelBundle.putString(key, null)
+                else -> throw IllegalArgumentException()
             }
         }
     }
